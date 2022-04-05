@@ -113,3 +113,6 @@ add_action('init','initialization');
 require_once('metaboxes/sponso.php');
 
 SponsoBox::register();
+
+require_once('options/agence.php');
+AgenceMenuPage::register();
