@@ -16,7 +16,7 @@
             the_post(); 
 
             get_template_part('parts/post','post');
-            
+
         endwhile;
     else : 
     ?>

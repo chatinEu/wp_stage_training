@@ -58,10 +58,20 @@ function custom_nav_menu_link_attributes($attr)
 
 
 add_filter('pre_get_document_title', 'title_filter');
-
 add_filter('nav_menu_css_class', 'custom_menu_class_css');
 add_filter('nav_menu_link_attributes', 'custom_nav_menu_link_attributes');
 
+
+
+     
+function initialization(){
+    add_taxinomy();
+    add_post_types();
+}
+
+/**
+ * add new sort of tags for wp posts in its UI
+ */
 function add_taxinomy(){
     register_taxonomy('sport','post',[
         'labels' => [
@@ -75,11 +85,26 @@ function add_taxinomy(){
 }
 
 
+/**
+ * add new post types to wp UI
+ */
+function add_post_types(){
+    register_post_type('bien',[
+        'label' => 'Bien',
+        'public' => true,
+        'menu_icon' => 'dashicons-building',
+        'supports' => ['title','editor','thumbnail'],
+        // show in rest pour un affichage de la page en block dans l'editeur
+        'has_archive' => true
+    ]);
+}
+
+
 
 //actions sur les hooks wordpress
 add_action('after_setup_theme', 'set_requierements');
 add_action('wp_enqueue_scripts', 'register_assets');
-add_action('init','add_taxinomy');
+add_action('init','initialization');
 
 
 
