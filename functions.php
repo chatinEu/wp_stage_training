@@ -60,8 +60,13 @@ function custom_nav_menu_link_attributes($attr)
 }
 
 
-
 add_filter('pre_get_document_title', 'title_filter');
 
 add_filter('nav_menu_css_class', 'custom_menu_class_css');
 add_filter('nav_menu_link_attributes', 'custom_nav_menu_link_attributes');
+
+
+
+require_once('metaboxes/sponso.php');
+
+SponsoBox::register();
