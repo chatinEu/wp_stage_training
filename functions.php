@@ -32,13 +32,6 @@ function set_requierements()
 
 
 
-//actions sur les hooks wordpress
-add_action('after_setup_theme', 'set_requierements');
-add_action('wp_enqueue_scripts', 'register_assets');
-
-
-
-
 
 function title_filter($title)
 {
@@ -60,10 +53,35 @@ function custom_nav_menu_link_attributes($attr)
 }
 
 
+
+
+
+
 add_filter('pre_get_document_title', 'title_filter');
 
 add_filter('nav_menu_css_class', 'custom_menu_class_css');
 add_filter('nav_menu_link_attributes', 'custom_nav_menu_link_attributes');
+
+function add_taxinomy(){
+    register_taxonomy('sport','post',[
+        'labels' => [
+            'name' => 'sport'
+        ],
+        'show_in_rest' => true,
+        'hierarchical' => true,
+        'show_admin_column' => true
+        ]
+    );
+}
+
+
+
+//actions sur les hooks wordpress
+add_action('after_setup_theme', 'set_requierements');
+add_action('wp_enqueue_scripts', 'register_assets');
+add_action('init','add_taxinomy');
+
+
 
 
 
