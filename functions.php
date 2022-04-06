@@ -71,7 +71,7 @@ add_filter('nav_menu_link_attributes', 'custom_nav_menu_link_attributes');
      
 function initialization(){
     add_taxinomy();
-    add_post_types();
+    //add_post_types();
 }
 
 /**
@@ -93,24 +93,24 @@ function add_taxinomy(){
 /**
  * add new post types to wp UI
  */
-function add_post_types(){
-    register_post_type('bien',[
+function add_custom_post_type(){
+    register_post_type('bien', [
         'label' => 'Bien',
         'public' => true,
+        'menu_position' => 3,
         'menu_icon' => 'dashicons-building',
-        'supports' => ['title','editor','thumbnail'],
-        // show in rest pour un affichage de la page en block dans l'editeur
-        'has_archive' => true
+        'supports' => ['title', 'editor', 'thumbnail'],
+        'show_in_rest' => true,
+        'has_archive' => true,
     ]);
 }
-
-
 
 //actions sur les hooks wordpress
 add_action('after_setup_theme', 'set_requierements');
 add_action('wp_enqueue_scripts', 'register_assets');
 
 add_action('init','initialization');
+add_action('init','add_custom_post_type');
 
 
 
@@ -122,3 +122,33 @@ SponsoBox::register();
 
 require_once('options/agence.php');
 AgenceMenuPage::register();
+
+// ajoute à la page listant les biens une colonne nommé Miniature
+add_action('manage_bien_posts_columns',function($columns){
+    var_dump($columns);
+    return[
+        'cb' => $columns['cb'],
+        'thumbnail' => 'Miniature',
+        'title' => $columns['title'],
+        'date' => $columns['date']
+    ];
+});
+
+
+/**
+ * modify comportement of the selected column in the admin list of the BIENS
+ * doesn't work because thumbnail is bugged on the custom post type for whatever reason
+ */
+// add_action('manage_bien_posts_custom_column',function($column,$post_id){
+//     if($column === "thumbnail"){
+//         the_post_thumbnail('thumbnail',$post_id);
+//     }
+// });
+
+
+/**
+ * modify the css of the page listing the Bien type posts in the admin section
+ */
+add_action('admin_enqueue_scripts',function(){
+    wp_enqueue_style('admin_theme',get_template_directory_uri().'/backend/bien.css');
+});
