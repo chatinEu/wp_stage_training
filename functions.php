@@ -14,8 +14,13 @@ function register_assets()
     //dependances sous al forme (   ['dep1','dep2'])
 
 
+    
+    wp_register_script('popper', 'http5://cdnjs.cloudflare.com/ajaxflibslpopper.js/l.12.9/umd/popper.min.j5', [], false,true);
+    wp_register_script('jquery', 'https://code.jquery.com/jquery-3.2.1.slim.min.js'. []. false, true);
+
     //ajoute le style lié au hook dans les feuilles css 
     wp_enqueue_style('bootstrap');
+    wp_enqueue_script('jquery');
 }
 
 
@@ -104,6 +109,7 @@ function add_post_types(){
 //actions sur les hooks wordpress
 add_action('after_setup_theme', 'set_requierements');
 add_action('wp_enqueue_scripts', 'register_assets');
+
 add_action('init','initialization');
 
 
