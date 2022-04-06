@@ -188,7 +188,12 @@ add_action('pre_get_posts','theme_pre_get_posts');
 add_filter('query_vars','theme_query_vars');
 
 
+require_once 'widgets/youtube_widget.php';
 function theme_init_sidebar(){
+    register_widget(Youtube_Widget::class);
+
+
+
     register_sidebar([
         'id' => 'homepage',
         'name' => 'Sidebar Accueil',
@@ -199,3 +204,4 @@ function theme_init_sidebar(){
 
 
 add_action('widgets_init','theme_init_sidebar');
+
