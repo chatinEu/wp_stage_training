@@ -152,3 +152,37 @@ add_action('manage_bien_posts_columns',function($columns){
 add_action('admin_enqueue_scripts',function(){
     wp_enqueue_style('admin_theme',get_template_directory_uri().'/backend/bien.css');
 });
+
+
+
+
+function theme_pre_get_posts(WP_Query $query){
+    if(is_admin() || is_home() || $query -> is_main_query())
+        return;
+
+
+
+    // adds to meta query meta datas of sponso
+    if(get_query_var('sponso') === '1'){
+        $meta = $query->get('meta_query',[]);
+        $meta[] = [
+            'key' => SponsoBox::META_KEY,
+            'compare' => 'EXISTS'
+        ];
+
+        $query -> set('meta_query',$meta);
+        //$query -> set('post_per_page',1);
+    }
+}
+
+/**
+ * rajoute aux queries le parametre sponso
+ * 
+ */
+function theme_query_vars($params){
+    $params[] = 'sponso';
+    return $params;
+}
+
+add_action('pre_get_posts','theme_pre_get_posts');
+add_filter('query_vars','theme_query_vars');
