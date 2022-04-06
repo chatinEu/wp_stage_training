@@ -186,3 +186,16 @@ function theme_query_vars($params){
 
 add_action('pre_get_posts','theme_pre_get_posts');
 add_filter('query_vars','theme_query_vars');
+
+
+function theme_init_sidebar(){
+    register_sidebar([
+        'id' => 'homepage',
+        'name' => 'Sidebar Accueil',
+        'before_widget' => '<div class="p-4 %2$s" id="%1$s">',
+        'after_widget' => '</div>'
+    ]);
+}
+
+
+add_action('widgets_init','theme_init_sidebar');

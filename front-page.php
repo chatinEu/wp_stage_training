@@ -1,41 +1,56 @@
-<div class='container'>
-    <?php get_header() ?>
 
-    <h1>hello world, this is my home page</h1>
+        
+        <?php get_header() ?>
 
-    <?php
+<div class='row' >
+    <div class ="col-md 8 blog-main">
 
-    //the_content();
+        <h1>hello world, this is my home page</h1>
 
-    print('time for the doc title ' . wp_get_document_title());
-    wp_list_categories(['taxonomy' => 'sport']);
+        <?php
 
-    print('<ul>');
-    if (have_posts()) :
-        while (have_posts()) :
-            the_post(); 
+        //the_content();
 
-            get_template_part('parts/post','post');
+        //print('time for the doc title ' . wp_get_document_title());
+        wp_list_categories(['taxonomy' => 'sport']);
 
-        endwhile;
-    else : 
-    ?>
-    <h1>Pas d'articles à afficher</h1>
-    <?php
-    endif;
+        print('<ul>');
+            if (have_posts()) :
+                while (have_posts()) :
+                    the_post(); 
+
+                    get_template_part('parts/post','post');
+
+                endwhile;
+            else : 
+            ?>
+            <h1>Pas d'articles à afficher</h1>
+            <?php
+            endif;
 
 
-    ?>
-    <div class='fin_post'>
-        <!-- rajoute pagination si plusieurs pages -->
-        <?= paginate_links() ?>
+            ?>
+            
+            <div class='fin_post'>
+                <!-- rajoute pagination si plusieurs pages -->
+                <?= paginate_links() ?>
 
-        <!-- rajoute lien direct vers posts, aurais plus de sens sur laes pages direct -->
-        <?= previous_post_link(); ?>
-        <?= next_post_link(); ?>
-    </div>
-    <?php
-    print('</ul>');
-    get_footer();
-    ?>
+                <!-- rajoute lien direct vers posts, aurais plus de sens sur laes pages direct -->
+                <?= previous_post_link(); ?>
+                <?= next_post_link(); ?>
+            </div>
+            
+        </ul>
+    
+    </div>  
+    <aside class="col-md-4 blog-sidebar">
+        <?= get_sidebar('homepage');?>
+    </aside>
+
+    
 </div>
+
+
+<?php
+get_footer();
+?>
