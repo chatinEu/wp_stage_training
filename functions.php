@@ -221,13 +221,85 @@ add_action('after_setup_theme',function(){
      
 });
 
-/** @var wpdb $wpdb */
-global $wpdb;
-$tag = '%train%';
-echo $tag;
-$query = $wpdb ->prepare("select * from {$wpdb->terms} where slug  like %s",[$tag]);
-$result = $wpdb -> get_results($query);
-echo'<pre>';
-var_dump($result);
-echo '</pre>';
-die();
+
+function access_to_wpdb(){
+    /** @var wpdb $wpdb */
+    global $wpdb;
+    $tag = '%train%';
+    echo $tag;
+    $query = $wpdb ->prepare("select * from {$wpdb->terms} where slug  like %s",[$tag]);
+    $result = $wpdb -> get_results($query);
+    echo'<pre>';
+    var_dump($result);
+    echo '</pre>';
+    die();
+}
+
+
+
+
+add_filter( 'rest_authentication_errors', function( $result ) {
+    // If a previous authentication check was applied,
+    // pass that result along without modification.
+    if ( true === $result || is_wp_error( $result ) ) {
+        return $result;
+    }
+ 
+    // No authentication has been performed yet.
+    // Return an error if user is not logged in.
+    if ( ! is_user_logged_in() ) {
+        return new WP_Error(
+            'rest_not_logged_in',
+            __( 'You are not currently logged in.' ),
+            array( 'status' => 401 )
+        );
+    }
+ 
+    // Our custom authentication check should have no effect
+    // on logged-in requests
+    return $result;
+});
+
+
+
+
+
+add_filter( 'rest_authentication_errors', function( $result ) {
+    if ($result === true || is_wp_error($result)){
+        return $result;
+    }
+
+    /** @var WP $wp   */
+    global $wp;
+    if (strpos($wp -> query_vars['rest_route'],'montheme/v1') !== false){
+        return true;
+    }
+
+    return $result;
+},9);
+
+// accessible avec http://localhost/wordpress/wp-json/montheme/v1/demo
+add_action('rest_api_init',function(){
+
+    //route can be: 'montheme/v1','/demo/(?P)'
+    //format url params like url/param
+
+    // 'montheme/v1','/demo/(?P)<id>\d+'
+    // set id param as int 
+    // like url/2  => id=2
+
+
+    register_rest_route('montheme/v1','/demo',[
+        'methods' => 'GET',
+        'callback' => function(WP_REST_Request $request){
+            $response = new WP_REST_Response(['success' => 'hello guys']);
+            $response -> set_status(201);
+            
+            //get the url params -> url?id=2
+            $request -> get_params();
+            
+            
+            return $response;
+        }
+    ]);
+});
