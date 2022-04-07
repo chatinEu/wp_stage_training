@@ -1,5 +1,5 @@
 <?php get_header() ?>
-hello world
+<p>this is a single post</p>
 
 <?php 
     print('time for the doc title '.wp_get_document_title());
@@ -36,9 +36,16 @@ hello world
             echo'</div>';
                 
         endwhile;
-    else: ?>
+    else:
+    ?>
+
     <h1>Pas d'articles à afficher</h1>
     <?php
     endif;
+    
+    if(comments_open() || get_comments_number()){
+        comments_template();
+    }
+    
     get_footer() ;
 ?>
