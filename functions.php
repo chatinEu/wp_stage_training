@@ -220,3 +220,14 @@ add_action('after_setup_theme',function(){
     load_theme_textdomain('montheme',textdomain(NULL));
      
 });
+
+/** @var wpdb $wpdb */
+global $wpdb;
+$tag = '%train%';
+echo $tag;
+$query = $wpdb ->prepare("select * from {$wpdb->terms} where slug  like %s",[$tag]);
+$result = $wpdb -> get_results($query);
+echo'<pre>';
+var_dump($result);
+echo '</pre>';
+die();
