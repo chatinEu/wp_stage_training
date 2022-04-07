@@ -210,3 +210,10 @@ add_action('widgets_init','theme_init_sidebar');
 
 add_action('switch_theme','flush_rewrite_action');
 add_action('after_switch_theme','flush_rewrite_action');
+
+
+
+add_action('after_setup_theme',function(){
+    load_theme_textdomain('montheme',textdomain(NULL));
+     
+});
