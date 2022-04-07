@@ -303,3 +303,35 @@ add_action('rest_api_init',function(){
         }
     ]);
 });
+
+
+
+/**
+ * set data into cache, persistance can be achieved through extensions or the use of the native transient API.
+ * using transient renders the cache methods useless unlike the use of W3 total cache
+ */
+function montheme_read_data(){
+    $data = wp_cache_get('data','montheme');
+    $dat = get_transient('data');
+    if($data === false && $dat === false){
+        var_dump('reading the file');
+        $data = file_get_contents(__DIR__. DIRECTORY_SEPARATOR . 'data');
+        
+        wp_cache_set('data',$data,'montheme',60);
+        set_transient('data',$data,60);
+    }
+    if (!$dat === false){
+        $data = $dat;
+    }
+    return $data;
+}
+
+
+
+//accessible par localhost/wordpress/?cachetest
+if(isset($_GET['cachetest'])){
+    var_dump(montheme_read_data());
+    var_dump(montheme_read_data());
+    var_dump(montheme_read_data());
+    die();
+}
