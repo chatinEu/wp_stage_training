@@ -1,6 +1,7 @@
 <?php
 
 require_once ('options/customize.php');
+require_once('options/cron.php');
 
 add_action('custom_head', function () {
     wp_head();
