@@ -1,5 +1,6 @@
 <?php
 
+require_once ('options/customize.php');
 
 add_action('custom_head', function () {
     wp_head();
@@ -24,7 +25,7 @@ function register_assets()
 }
 
 
-// theme dependancies
+// theme 'dependancies'
 function set_requierements()
 {
     add_theme_support('menus');
@@ -205,3 +206,7 @@ function theme_init_sidebar(){
 
 add_action('widgets_init','theme_init_sidebar');
 
+
+
+add_action('switch_theme','flush_rewrite_action');
+add_action('after_switch_theme','flush_rewrite_action');
