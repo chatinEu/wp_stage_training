@@ -113,6 +113,7 @@ add_action('wp_enqueue_scripts', 'register_assets');
 add_action('init','initialization');
 add_action('init','add_custom_post_type');
 
+add_theme_support( 'post-thumbnails' );
 
 
 
@@ -138,13 +139,12 @@ add_action('manage_bien_posts_columns',function($columns){
 
 /**
  * modify comportement of the selected column in the admin list of the BIENS
- * doesn't work because thumbnail is bugged on the custom post type for whatever reason
  */
-// add_action('manage_bien_posts_custom_column',function($column,$post_id){
-//     if($column === "thumbnail"){
-//         the_post_thumbnail('thumbnail',$post_id);
-//     }
-// });
+add_action('manage_bien_posts_custom_column',function($column,$post_id){
+    if($column === "thumbnail" &&   has_post_thumbnail($post_id) ){
+        the_post_thumbnail('thumbnail',$post_id);
+    }
+},10,2);
 
 
 /**
@@ -206,7 +206,9 @@ function theme_init_sidebar(){
 
 add_action('widgets_init','theme_init_sidebar');
 
-
+function flush_rewrite_action(){
+    flush_rewrite_rules();
+}
 
 add_action('switch_theme','flush_rewrite_action');
 add_action('after_switch_theme','flush_rewrite_action');
